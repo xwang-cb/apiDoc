@@ -1,0 +1,298 @@
+{
+    "swagger": "2.0",
+    "info": {
+      "description": "for all following APIs, it should add 2 parameters at API request header before calling API: X_PROXY_SECRET_TOKEN and AUTHORIZATION, all APIs retrieve current accountDID and UserDID from AUTHORIZATION",
+      "version": "1.0.0",
+      "title": "Swagger jobs attached with job branding"
+    },
+    "host": "api.careerbuilder.com",
+    "basePath": "/corporate/jobposterapi/JobAttachBrandings",
+    "tags": [
+      {
+        "name": "brandedJobs API",
+        "description": "Jobs attached with a job branding"
+      }
+    ],
+    "schemes": [
+      "http"
+    ],
+    "paths": {
+      "/brandedJobs": {
+        "get": {
+          "tags": [
+            "brandedJobs API"
+          ],
+          "summary": "Get jobs attached with a job branding",
+          "description": "",
+          "operationId": "getJobs",
+          "consumes": [
+            "application/json"
+          ],
+          "parameters": [
+            {
+              "in": "query",
+              "name": "jobBrandingId",
+              "required": true,
+              "type": "string"
+            },
+            {
+              "in": "query",
+              "name": "status",
+              "type": "string",
+              "enum": [
+                "All",
+                "Active",
+                "Inactive"
+              ]
+            },
+            {
+              "in": "query",
+              "name": "page",
+              "default": 1,
+              "type": "number"
+            },
+            {
+              "in": "query",
+              "name": "page_size",
+              "default": 20,
+              "type": "number"
+            },
+            {
+              "in": "query",
+              "name": "sortBy",
+              "default": "JobTitle",
+              "type": "string",
+              "enum": [
+                "JobTitle",
+                "Location",
+                "Status",
+                "ExpireDate"
+              ]
+            },
+            {
+              "in": "query",
+              "name": "sortDirection",
+              "default": "Asc",
+              "type": "string",
+              "enum": [
+                "Asc",
+                "Desc"
+              ]
+            }
+          ],
+          "produces": [
+            "application/json"
+          ],
+          "responses": {
+            "200": {
+              "description": "successful operation",
+              "schema": {
+                "$ref": "#/definitions/JobsAttachedWithAJobBranding"
+              }
+            },
+            "400": {
+              "description": "Error in query parameters",
+              "schema": {
+                "$ref": "#/definitions/ErrApiResponse"
+              }
+            }
+          }
+        }
+      },
+      "/brandedJobs/detach": {
+        "post": {
+          "tags": [
+            "brandedJobs API"
+          ],
+          "summary": "Detach several jobs from a job branding",
+          "description": "",
+          "operationId": "detach",
+          "consumes": [
+            "application/json"
+          ],
+          "produces": [
+            "application/json"
+          ],
+          "parameters": [
+            {
+              "in": "header",
+              "name": "Content-Type",
+              "default": "application/json",
+              "required": true,
+              "type": "string"
+            },
+            {
+              "in": "body",
+              "name": "body",
+              "description": "jobDIDs that needs to be detached from a job branding",
+              "required": true,
+              "schema": {
+                "$ref": "#/definitions/DetachRequest"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "successful operation",
+              "schema": {
+                "$ref": "#/definitions/AttachJobResponse"
+              }
+            },
+            "400": {
+              "description": "BrandingId should not be empty. Jobs list is required.",
+              "schema": {
+                "$ref": "#/definitions/ErrApiResponse"
+              }
+            }
+          }
+        }
+      }
+    },
+    "definitions": {
+      "JobsAttachedWithAJobBranding": {
+        "type": "object",
+        "properties": {
+          "sortBy": {
+            "type": "string",
+            "example": "Status"
+          },
+          "sortDirection": {
+            "type": "string",
+            "example": "Desc"
+          },
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/definitions/LiteJobInfo"
+            }
+          },
+          "page": {
+            "type": "number",
+            "example": 1
+          },
+          "page_size": {
+            "type": "number",
+            "example": 20
+          },
+          "total": {
+            "type": "number",
+            "example": 32
+          },
+          "errors": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "LiteJobInfo": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "example": "JYR2BX5Z0LCGTRLV6G8"
+          },
+          "title": {
+            "type": "string",
+            "example": "Property Claims Field Estimator"
+          },
+          "status": {
+            "type": "string",
+            "example": "Archived"
+          },
+          "location": {
+            "type": "string",
+            "example": "US-NJ-Washington, DC"
+          },
+          "jobId": {
+            "type": "string",
+            "example": "ASDF-ASDF-AG"
+          },
+          "expireDate": {
+            "type": "string",
+            "example": "07/13/2016"
+          }
+        }
+      },
+      "ErrApiResponse": {
+        "type": "object",
+        "properties": {
+          "errors": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "example": "Bad Request: X is required"
+            }
+          },
+          "data": {
+            "type": "array",
+            "items": {
+              "type": "object"
+            }
+          }
+        }
+      },
+      "DetachRequest": {
+        "type": "object",
+        "required": [
+          "jobBrandingId",
+          "jobDIDs"
+        ],
+        "properties": {
+          "jobBrandingId": {
+            "type": "string",
+            "example": "JBJH6RZ6P98YDXYV77ZQ"
+          },
+          "jobDIDs": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "example": [
+              "JHP7796JVM94DQ0DCYP",
+              "J8J3Z86WWHWN49S1W5H",
+              "JGW0R365X7L47GVRFM1"
+            ]
+          }
+        }
+      },
+      "BrandingAttachJobResponse": {
+        "type": "object",
+        "properties": {
+          "SuccessDetachJobsCount": {
+            "type": "number",
+            "example": 2
+          },
+          "SuccessDetachJobDIDs": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "example": [
+              "JHP7796JVM94DQ0DCYP",
+              "J8J3Z86WWHWN49S1W5H"
+            ]
+          }
+        }
+      },
+      "AttachJobResponse": {
+        "type": "object",
+        "properties": {
+          "Errors": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "example": ""
+            }
+          },
+          "Results": {
+            "type": "array",
+            "items": {
+              "$ref": "#/definitions/BrandingAttachJobResponse"
+            }
+          }
+        }
+      }
+    }
+  }
