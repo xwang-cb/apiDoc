@@ -24,24 +24,24 @@
         ],
         "summary": "Get jobs attached with a job branding",
         "description": "",
-        "operationId": "getJobs",
+        "operationId": "getBrandedJobs",
         "consumes": [
           "application/json"
         ],
         "parameters": [
           {
             "in": "query",
-            "name": "jobBrandingId",
+            "name": "JobBrandingId",
             "required": true,
             "type": "string"
           },
           {
             "in": "query",
-            "name": "status",
+            "name": "Status",
             "type": "string",
             "enum": [
-              "active",
-              "inactive"
+              "Active",
+              "Inactive"
             ]
           },
           {
@@ -61,25 +61,25 @@
           },
           {
             "in": "query",
-            "name": "sortBy",
-            "default": "jobTitle",
+            "name": "SortBy",
+            "default": "JobTitle",
             "type": "string",
             "enum": [
-              "jobTitle",
-              "location",
-              "status",
-              "jobId",
-              "expireDate"
+              "JobTitle",
+              "Location",
+              "Status",
+              "JobId",
+              "ExpireDate"
             ]
           },
           {
             "in": "query",
-            "name": "sortDirection",
-            "default": "asc",
+            "name": "SortDirection",
+            "default": "Asc",
             "type": "string",
             "enum": [
-              "asc",
-              "desc"
+              "Asc",
+              "Desc"
             ]
           }
         ],
@@ -96,7 +96,7 @@
           "400": {
             "description": "Invalid query parameters",
             "schema": {
-              "$ref": "#/definitions/ErrApiResponse"
+              "$ref": "#/definitions/ErrGetApiResponse"
             }
           }
         }
@@ -144,7 +144,7 @@
           "400": {
             "description": "Invalid query parameters",
             "schema": {
-              "$ref": "#/definitions/ErrApiResponse"
+              "$ref": "#/definitions/ErrOperationApiResponse"
             }
           }
         }
@@ -155,33 +155,38 @@
     "LiteJobInfos": {
       "type": "object",
       "properties": {
-        "sortBy": {
-          "type": "string",
-          "example": "Status"
-        },
-        "sortDirection": {
-          "type": "string",
-          "example": "Desc"
-        },
-        "data": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/LiteJobInfo"
+        "Results": {
+          "type": "object",
+          "properties": {
+            "SortBy": {
+              "type": "string",
+              "example": "Status"
+            },
+            "SortDirection": {
+              "type": "string",
+              "example": "Desc"
+            },
+            "Data": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/LiteJobInfo"
+              }
+            },
+            "page": {
+              "type": "number",
+              "example": 1
+            },
+            "page_size": {
+              "type": "number",
+              "example": 20
+            },
+            "total": {
+              "type": "number",
+              "example": 32
+            }
           }
         },
-        "page": {
-          "type": "number",
-          "example": 1
-        },
-        "page_size": {
-          "type": "number",
-          "example": 20
-        },
-        "total": {
-          "type": "number",
-          "example": 32
-        },
-        "errors": {
+        "Errors": {
           "type": "array",
           "items": {
             "type": "string"
@@ -218,17 +223,24 @@
         }
       }
     },
-    "ErrApiResponse": {
+    "ErrGetApiResponse": {
       "type": "object",
       "properties": {
-        "errors": {
+        "Errors": {
           "type": "array",
           "items": {
             "type": "string",
-            "example": "jobBrandingId is required"
+            "enum": [
+              "JobBrandingId is required",
+              "page is required",
+              "page_size is required",
+              "Invalid SortBy param, optional values are JobTitle, Location, Status, JobId and ExpiredDate",
+              "Invalid SortDirection param, optional values are asc and desc"
+            ],
+            "example": "JobBrandingId is required"
           }
         },
-        "data": {
+        "Results": {
           "type": "array",
           "items": {
             "type": "object"
@@ -239,15 +251,15 @@
     "OperationRequest": {
       "type": "object",
       "required": [
-        "jobBrandingId",
-        "jobDIDs"
+        "JobBrandingId",
+        "JobDIDs"
       ],
       "properties": {
-        "jobBrandingId": {
+        "JobBrandingId": {
           "type": "string",
           "example": "JBJH6RZ6P98YDXYV77ZQ"
         },
-        "jobDIDs": {
+        "JobDIDs": {
           "type": "array",
           "items": {
             "type": "string"
@@ -263,34 +275,50 @@
     "OperationResponse": {
       "type": "object",
       "properties": {
-        "data": {
+        "Results": {
           "type": "object",
           "properties": {
-            "jobDIDsOperatedSucc": {
+            "JobDIDs": {
               "type": "array",
               "items": {
                 "type": "string"
               },
               "example": [
                 "JHP7796JVM94DQ0DCYP",
-                "J8J3Z86WWHWN49S1W5H"
-              ]
-            },
-            "jobDIDsOperatedFail": {
-              "type": "array",
-              "items": {
-                "type": "string"
-              },
-              "example": [
+                "J8J3Z86WWHWN49S1W5H",
                 "JGW0R365X7L47GVRFM1"
               ]
             }
           }
         },
-        "errors": {
+        "Errors": {
           "type": "array",
           "items": {
             "type": "string"
+          }
+        }
+      }
+    },
+    "ErrOperationApiResponse": {
+      "type": "object",
+      "properties": {
+        "Errors": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "JobBrandingId is required",
+              "JobDIDs is required",
+              "Invalid jobDIDs, some job do not belong to the job branding",
+              "You have no permission to complete the operation"
+            ],
+            "example": "jobBrandingId is required"
+          }
+        },
+        "Results": {
+          "type": "array",
+          "items": {
+            "type": "object"
           }
         }
       }
