@@ -40,43 +40,46 @@
             "name": "status",
             "type": "string",
             "enum": [
-              "All",
-              "Active",
-              "Inactive"
+              "active",
+              "inactive"
             ]
           },
           {
             "in": "query",
             "name": "page",
-            "default": 1,
-            "type": "number"
+            "required": true,
+            "type": "integer",
+            "minimum": 1
           },
           {
             "in": "query",
             "name": "page_size",
-            "default": 20,
-            "type": "number"
+            "required": true,
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 100
           },
           {
             "in": "query",
             "name": "sortBy",
-            "default": "JobTitle",
+            "default": "jobTitle",
             "type": "string",
             "enum": [
-              "JobTitle",
-              "Location",
-              "Status",
-              "ExpireDate"
+              "jobTitle",
+              "location",
+              "status",
+              "jobId",
+              "expireDate"
             ]
           },
           {
             "in": "query",
             "name": "sortDirection",
-            "default": "Asc",
+            "default": "asc",
             "type": "string",
             "enum": [
-              "Asc",
-              "Desc"
+              "asc",
+              "desc"
             ]
           }
         ],
