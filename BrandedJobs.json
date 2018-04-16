@@ -156,33 +156,36 @@
       "type": "object",
       "properties": {
         "Results": {
-          "type": "object",
-          "properties": {
-            "SortBy": {
-              "type": "string",
-              "example": "Status"
-            },
-            "SortDirection": {
-              "type": "string",
-              "example": "Desc"
-            },
-            "Data": {
-              "type": "array",
-              "items": {
-                "$ref": "#/definitions/LiteJobInfo"
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "SortBy": {
+                "type": "string",
+                "example": "Status"
+              },
+              "SortDirection": {
+                "type": "string",
+                "example": "Desc"
+              },
+              "Data": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/definitions/LiteJobInfo"
+                }
+              },
+              "Page": {
+                "type": "number",
+                "example": 1
+              },
+              "PageSize": {
+                "type": "number",
+                "example": 20
+              },
+              "Total": {
+                "type": "number",
+                "example": 32
               }
-            },
-            "Page": {
-              "type": "number",
-              "example": 1
-            },
-            "PageSize": {
-              "type": "number",
-              "example": 20
-            },
-            "Total": {
-              "type": "number",
-              "example": 32
             }
           }
         },
@@ -232,10 +235,10 @@
             "type": "string",
             "enum": [
               "JobBrandingId is required",
-              "page is required",
-              "page_size is required",
+              "Page is required",
+              "PageSize is required",
               "Invalid SortBy param, optional values are JobTitle, Location, Status, JobId and ExpiredDate",
-              "Invalid SortDirection param, optional values are asc and desc"
+              "Invalid SortDirection param, optional values are Asc and Desc"
             ],
             "example": "JobBrandingId is required"
           }
@@ -276,18 +279,21 @@
       "type": "object",
       "properties": {
         "Results": {
-          "type": "object",
-          "properties": {
-            "JobDIDs": {
-              "type": "array",
-              "items": {
-                "type": "string"
-              },
-              "example": [
-                "JHP7796JVM94DQ0DCYP",
-                "J8J3Z86WWHWN49S1W5H",
-                "JGW0R365X7L47GVRFM1"
-              ]
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "JobDIDs": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                },
+                "example": [
+                  "JHP7796JVM94DQ0DCYP",
+                  "J8J3Z86WWHWN49S1W5H",
+                  "JGW0R365X7L47GVRFM1"
+                ]
+              }
             }
           }
         },
@@ -309,10 +315,10 @@
             "enum": [
               "JobBrandingId is required",
               "JobDIDs is required",
-              "Invalid jobDIDs, some job do not belong to the job branding",
+              "Invalid jobDIDs, at least one job does not belong to the job branding",
               "You have no permission to complete the operation"
             ],
-            "example": "jobBrandingId is required"
+            "example": "JobBrandingId is required"
           }
         },
         "Results": {
