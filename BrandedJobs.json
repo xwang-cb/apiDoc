@@ -46,14 +46,14 @@
           },
           {
             "in": "query",
-            "name": "page",
+            "name": "Page",
             "required": true,
             "type": "integer",
             "minimum": 1
           },
           {
             "in": "query",
-            "name": "page_size",
+            "name": "PageSize",
             "required": true,
             "type": "integer",
             "minimum": 1,
@@ -127,7 +127,7 @@
           {
             "in": "body",
             "name": "body",
-            "description": "jobDIDs that needs to be detached from a job branding",
+            "description": "JobDIDs that needs to be detached from a job branding",
             "required": true,
             "schema": {
               "$ref": "#/definitions/OperationRequest"
@@ -172,15 +172,15 @@
                 "$ref": "#/definitions/LiteJobInfo"
               }
             },
-            "page": {
+            "Page": {
               "type": "number",
               "example": 1
             },
-            "page_size": {
+            "PageSize": {
               "type": "number",
               "example": 20
             },
-            "total": {
+            "Total": {
               "type": "number",
               "example": 32
             }
@@ -197,27 +197,27 @@
     "LiteJobInfo": {
       "type": "object",
       "properties": {
-        "id": {
+        "Id": {
           "type": "string",
           "example": "JYR2BX5Z0LCGTRLV6G8"
         },
-        "title": {
+        "Title": {
           "type": "string",
           "example": "Property Claims Field Estimator"
         },
-        "status": {
+        "Status": {
           "type": "string",
           "example": "Archived"
         },
-        "location": {
+        "Location": {
           "type": "string",
           "example": "US-NJ-Washington, DC"
         },
-        "jobId": {
+        "JobId": {
           "type": "string",
           "example": "ASDF-ASDF-AG"
         },
-        "expireDate": {
+        "ExpireDate": {
           "type": "string",
           "example": "07/13/2016"
         }
